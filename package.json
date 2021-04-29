@@ -1,0 +1,41 @@
+{
+  "name": "sass-vars-convertor",
+  "version": "0.0.1-beta.0",
+  "description": "sass-vars-convertor is a Library to easily pass Sass variables convert JSON.",
+  "scripts": {
+    "build": "rollup --config rollup.config.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "import": "./esm/index.js",
+      "require": "./cjs/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "cjs/index.js",
+  "module": "esm/index.js",
+  "typings": "cjs/index.d.ts",
+  "files": [
+    "cjs/",
+    "esm/",
+    "CHANGELOG.md",
+    "LICENSE.md",
+    "README.md"
+  ],
+  "dependencies": {
+    "@ungap/from-entries": "^0.2.1",
+    "camelcase-keys": "^6.2.2",
+    "fibers": "^5.0.0",
+    "node-sass-json-functions": "^3.1.0",
+    "postcss": "^8.2.13",
+    "postcss-scss": "^3.0.5",
+    "sass": "^1.32.12",
+    "strip-outer": "^1.0.1"
+  },
+  "devDependencies": {
+    "rollup": "^2.46.0"
+  }
+}
