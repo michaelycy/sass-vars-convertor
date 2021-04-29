@@ -24,7 +24,7 @@ export default async (cssTextContent, options = {}) => {
     syntax: postcssScss,
     from: undefined,
   });
-  let root = response.root;
+  let { root } = response;
 
   const node = postcss.rule({ selector: '.__sassVars__' });
 
@@ -71,7 +71,6 @@ export default async (cssTextContent, options = {}) => {
       Object.entries(data).map(([key, value]) => [stripOuter(key, '$'), value])
     );
 
-    console.log(sassVars);
     return camelcaseKeys(sassVars);
   }
 
