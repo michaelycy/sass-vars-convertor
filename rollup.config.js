@@ -1,5 +1,3 @@
-'use strict';
-
 const path = require('path');
 const { promises: fs } = require('fs');
 
@@ -21,33 +19,34 @@ module.exports = {
     },
   ],
   plugins: [
-    (() => {
-      return {
-        name: 'package-type',
-        async writeBundle(output) {
-          let prefix, type;
+    (() => ({
+      name: 'package-type',
+      async writeBundle(output) {
+        let prefix;
+        let type;
 
-          if (output.file.includes('cjs/')) {
-            prefix = 'cjs';
-            type = 'commonjs';
-          } else if (output.file.includes('esm/')) {
-            prefix = 'esm';
-            type = 'module';
+        if (output.file.includes('cjs/')) {
+          prefix = 'cjs';
+          type = 'commonjs';
+        } else if (output.file.includes('esm/')) {
+          prefix = 'esm';
+          type = 'module';
+        }
+
+        if (typeof prefix !== 'undefined') {
+          const pkg = path.join(prefix, 'package.json');
+          const typings = path.join(prefix, 'index.d.ts');
+          try {
+            await fs.unlink(pkg);
+          } catch (error) {
+            throw new Error(error);
           }
 
-          if (typeof prefix !== 'undefined') {
-            const package_ = path.join(prefix, 'package.json');
-            const typings = path.join(prefix, 'index.d.ts');
-            try {
-              await fs.unlink(package_);
-            } catch (error) {}
+          await fs.writeFile(pkg, JSON.stringify({ type }), 'utf8');
 
-            await fs.writeFile(package_, JSON.stringify({ type }), 'utf8');
-
-            await fs.copyFile(typingsSrc, typings);
-          }
-        },
-      };
-    })(),
+          await fs.copyFile(typingsSrc, typings);
+        }
+      },
+    }))(),
   ],
 };

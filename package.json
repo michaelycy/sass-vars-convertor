@@ -1,11 +1,10 @@
 {
   "name": "sass-vars-convertor",
-  "version": "0.0.1-beta.0",
+  "version": "0.0.1",
   "description": "sass-vars-convertor is a Library to easily pass Sass variables convert JSON.",
   "scripts": {
     "prepare": "husky install",
-    "build": "rollup --config rollup.config.js",
-    "lint": ""
+    "build": "rollup --config rollup.config.js"
   },
   "keywords": [],
   "author": "",
