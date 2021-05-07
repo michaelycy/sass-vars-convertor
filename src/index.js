@@ -10,6 +10,29 @@ import fromEntries from '@ungap/from-entries';
 
 const noop = () => ({ postcssPlugin: '_noop' });
 
+function isObject(value) {
+  return Object.prototype.toString.call(value) === '[object Object]';
+}
+
+function camelizeObj(obj) {
+  return camelcaseKeys(
+    fromEntries(
+      Object.entries(obj).map(([key, value]) => {
+        let val = value;
+        // 移除无效的字符串 $
+        const validKey = stripOuter(key, '$');
+
+        if (isObject(value)) {
+          camelizeObj(value);
+          val = camelcaseKeys(value);
+        }
+
+        return [validKey, val];
+      })
+    )
+  );
+}
+
 /**
  * @param {string} cssTextContent
  * @param {Object} options
@@ -67,11 +90,7 @@ export default async (cssTextContent, options = {}) => {
   });
 
   if (camelize) {
-    const sassVars = fromEntries(
-      Object.entries(data).map(([key, value]) => [stripOuter(key, '$'), value])
-    );
-
-    return camelcaseKeys(sassVars);
+    return camelizeObj(data);
   }
 
   return data;
